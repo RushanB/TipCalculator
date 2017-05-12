@@ -8,9 +8,13 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UITextFieldDelegate>
+@interface ViewController ()
 
+@property (nonatomic,assign) CGFloat defaultTip;
 @property (weak, nonatomic) IBOutlet UITextField *billAmountTextField;
+@property (weak, nonatomic) IBOutlet UILabel *tipAmountLabel;
+
+@property (weak, nonatomic) IBOutlet UITextField *tipPercentageTextField;
 
 @end
 
@@ -18,36 +22,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [_billAmountTextField becomeFirstResponder];
-    _billAmountTextField.delegate = self;
+    self.defaultTip = 0.15;
+
 }
 
 - (IBAction)calculateTip:(id)sender {
-    float tip =
-    [self.view endEditing: YES];
-}
--(void)textFieldDidBeginEditing:(UITextField *)textField{
-    
-}
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    BOOL shouldReturn = textField.text.length > 0;
-    if(shouldReturn){
-        [textField resignFirstResponder];
-        
+    float billAmount = [self.billAmountTextField.text floatValue];
+    float tipAmount;
+    if([self.tipPercentageTextField.text floatValue]){
+        tipAmount = (billAmount * [self.tipPercentageTextField.text floatValue]);
+    }else{
+        tipAmount = (billAmount *self.defaultTip);
     }
-    return shouldReturn;
+    NSString *tip = [NSString stringWithFormat:@"Tip: $%0.2f", tipAmount];
+    //NSLog(@"Tip: $%0.2f", tipAmount);
+    self.tipAmountLabel.text = tip;
 }
-
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-    return YES;
-}
-
--(void)textFieldDidEndEditing:(UITextField *)textField{
-    NSLog(@"Tip entered: %0.2f", textField.text.floatValue);
-    text.Field.text = textField.
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
